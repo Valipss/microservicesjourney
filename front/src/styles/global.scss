@@ -1,0 +1,38 @@
+@import "themes";
+
+body {
+  background: #f8f9fa;
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+h1,h2,h3,h4,h5,h6,p {
+  margin: 0;
+}
+
+.btn-outline-primary-white {
+  color: white !important;
+  border-color: white !important;
+}
+
+.text-blue {
+  color: var(--bs-blue);
+}
+
+.form-large-ctn {
+  height: 80vh;
+}
+
+.error-text {
+  transition: opacity 0.3s ease;
+  font-size: 0.75rem;
+  color: var(--bs-danger);
+  margin: 0;
+  padding-left: 0.5rem;
+  font-weight: 600;
+}

@@ -1,1 +1,22 @@
-<p>ui</p>
+<header class="d-flex w-100">
+    <div class="d-flex align-items-center justify-content-between inner">
+        <a href="/" class="text-white fs-4 text-decoration-none">My microservice</a>
+        <ng-container [ngSwitch]="router.url">
+            <a *ngSwitchCase="'/login'" href="/sign-up" class="btn btn-outline-primary-white">Sign up</a>
+            <a *ngSwitchCase="'/sign-up'" href="/login" class="btn btn-outline-primary-white">Log in</a>
+            <div *ngSwitchDefault>
+                <div *ngIf="isLogged else login">
+                    <a href="/dashboard" class="btn btn-outline-primary-white me-3">Dashboard</a>
+                    <button class="btn btn-outline-danger">Logout</button>
+                </div>
+                <ng-template #login>
+                    <a href="/login" class="btn btn-outline-primary-white">Login</a>
+                </ng-template>
+            </div>
+        </ng-container>
+    </div>
+</header>
+
+<div class="inner py-3">
+    <router-outlet></router-outlet>
+</div>

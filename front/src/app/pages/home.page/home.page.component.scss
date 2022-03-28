@@ -1,0 +1,40 @@
+h1 {
+  margin-top: 0;
+  font-size: 2rem;
+}
+
+.lottie-ctn {
+  min-width: 80%;
+  margin: 0 auto;
+}
+
+.home-section {
+  margin-top: 3rem;
+}
+
+.home-section:last-child {
+  margin-top: 3rem;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    margin-top: 3rem;
+    font-size: 4rem;
+    margin-right: 3rem;
+  }
+  .lottie-ctn {
+    min-width: 300px;
+    margin: 0 auto;
+  }
+  .home-section {
+    margin-top: 5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  h1 {
+    margin-top: 3rem;
+    font-size: 4rem;
+    margin-right: 3rem;
+  }
+}

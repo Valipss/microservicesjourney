@@ -1,1 +1,30 @@
-<p>login.page works!</p>
+<div class="w-100 d-flex align-items-center justify-content-center form-large-ctn">
+    <form class="d-flex flex-column bg-light rounded shadow p-5" [formGroup]="loginForm">
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Email</mat-label>
+            <input formControlName="email" matInput placeholder="john.doe@gmail.com">
+        </mat-form-field>
+
+        <app-form-field-error [form]="loginForm"
+                              [formControlNameString]="'email'"
+                              [isSubmit]="isSubmit"
+                              [displayField]="'Email'"></app-form-field-error>
+
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input formControlName="password" type="password" matInput>
+        </mat-form-field>
+
+        <app-form-field-error [form]="loginForm"
+                              [formControlNameString]="'password'"
+                              [isSubmit]="isSubmit"
+                              [displayField]="'Password'"></app-form-field-error>
+
+        <button *ngIf="!isLoading else loading" (click)="submitForm()" class="btn btn-primary mt-3">Log in</button>
+        <ng-template #loading>
+            <div class="d-flex justify-content-center mt-3">
+                <mat-spinner [diameter]="38"></mat-spinner>
+            </div>
+        </ng-template>
+    </form>
+</div>

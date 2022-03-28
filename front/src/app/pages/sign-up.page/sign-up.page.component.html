@@ -1,1 +1,60 @@
-<p>sign-up.page works!</p>
+<div class="w-100 d-flex align-items-center justify-content-center form-large-ctn">
+    <form class="d-flex flex-column bg-light rounded shadow p-5" [formGroup]="signUpForm">
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Lastname</mat-label>
+            <input formControlName="lastname" matInput placeholder="Doe">
+        </mat-form-field>
+
+        <app-form-field-error [form]="signUpForm"
+                              [formControlNameString]="'lastname'"
+                              [isSubmit]="isSubmit"
+                              [displayField]="'Lastname'"></app-form-field-error>
+
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Firstname</mat-label>
+            <input formControlName="lastname" matInput placeholder="John">
+        </mat-form-field>
+
+        <app-form-field-error [form]="signUpForm"
+                              [formControlNameString]="'firstname'"
+                              [isSubmit]="isSubmit"
+                              [displayField]="'Firstname'"></app-form-field-error>
+
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Email</mat-label>
+            <input formControlName="email" matInput placeholder="john.doe@gmail.com">
+        </mat-form-field>
+
+        <app-form-field-error [form]="signUpForm"
+                              [formControlNameString]="'email'"
+                              [isSubmit]="isSubmit"
+                              [displayField]="'Email'"></app-form-field-error>
+
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input formControlName="password" type="password" matInput>
+        </mat-form-field>
+
+        <app-form-field-error [form]="signUpForm"
+                              [formControlNameString]="'password'"
+                              [isSubmit]="isSubmit"
+                              [displayField]="'Password'"></app-form-field-error>
+
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Password confirmation</mat-label>
+            <input formControlName="passwordConfirmation" type="password" matInput>
+        </mat-form-field>
+
+        <app-form-field-error [form]="signUpForm"
+                              [formControlNameString]="'passwordConfirmation'"
+                              [isSubmit]="isSubmit"
+                              [displayField]="'Password confirmation'"></app-form-field-error>
+
+        <button *ngIf="!isLoading else loading" (click)="submitForm()" class="btn btn-primary mt-3">Sign up</button>
+        <ng-template #loading>
+            <div class="d-flex justify-content-center mt-3">
+                <mat-spinner [diameter]="38"></mat-spinner>
+            </div>
+        </ng-template>
+    </form>
+</div>

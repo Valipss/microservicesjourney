@@ -1,0 +1,5 @@
+
+<p class="error-text"
+   [ngClass]="(isSubmit == true && form.controls[formControlNameString].invalid) ? 'opacity-100' : 'opacity-0'">
+    {{ error }}
+</p>
