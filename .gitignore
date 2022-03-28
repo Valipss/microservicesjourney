@@ -69,3 +69,4 @@ scripts/
 
 .idea
 .env
+.DS_Store
