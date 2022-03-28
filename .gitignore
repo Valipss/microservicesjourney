@@ -66,3 +66,6 @@ project/plugins/project/
 #conf/
 #test/
 scripts/
+
+.idea
+.env
