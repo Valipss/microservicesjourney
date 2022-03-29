@@ -5,28 +5,15 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const users = sequelizeClient.define('users', {
-    firstname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
-    lastname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
-    password: {
+  const posts = sequelizeClient.define('posts', {
+    title: {
       type: DataTypes.STRING,
       allowNull: false
     },
-  
-  
+    body: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     hooks: {
       beforeCount(options) {
@@ -36,14 +23,14 @@ module.exports = function (app) {
   });
 
   // eslint-disable-next-line no-unused-vars
-  users.associate = function (models) {
+  posts.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
-    const { posts, comments, images } = models;
-    users.hasMany(posts, {foreignKey: {allowNull: false}});
-    users.hasMany(comments, {foreignKey: {allowNull: false}});
-    users.hasMany(images, {foreignKey: {allowNull: false}});
+    const { comments, images, users } = models;
+    posts.belongsTo(users, {foreignKey: {allowNull: false}});
+    posts.hasMany(comments, {foreignKey: {allowNull: false}});
+    posts.hasOne(images, {foreignKey: {allowNull: false}});
   };
 
-  return users;
+  return posts;
 };
