@@ -39,5 +39,12 @@ services:
     environment:
       - DOCKER_PORT=$IMAGE_DOCKER_PORT
 volumes: 
+  front:
+    build: ./front
+    restart: unless-stopped
+    ports:
+      - $FRONT_LOCAL_PORT:$FRONT_DOCKER_PORT
+    env_file: ./.env
+volumes:
   db:
 
