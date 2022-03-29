@@ -38,13 +38,12 @@ services:
       - $IMAGE_LOCAL_PORT:$IMAGE_DOCKER_PORT
     environment:
       - DOCKER_PORT=$IMAGE_DOCKER_PORT
-volumes: 
   front:
     build: ./front
     restart: unless-stopped
+    env_file: ./.env
     ports:
       - $FRONT_LOCAL_PORT:$FRONT_DOCKER_PORT
-    env_file: ./.env
 volumes:
   db:
 
