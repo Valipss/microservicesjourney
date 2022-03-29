@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
     env_file: ./.env
     ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+      - $API_LOCAL_PORT:$API_DOCKER_PORT
     environment:
       - DB_HOST=mariadb
       - DB_USER=$MYSQLDB_USER
@@ -29,6 +29,15 @@ services:
       - DB_PORT=$MYSQLDB_DOCKER_PORT
     stdin_open: true
     tty: true
+  imagery:
+    depends_on:
+      - api
+    build: ./ImageService
+    env_file: ./.env
+    ports:
+      - $IMAGE_LOCAL_PORT:$IMAGE_DOCKER_PORT
+    environment:
+      - DOCKER_PORT=$IMAGE_DOCKER_PORT
 volumes: 
   db:
 
