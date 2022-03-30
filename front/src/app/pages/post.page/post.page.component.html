@@ -1,0 +1,22 @@
+<p class="my-breadcrumb mt-2 fs-6">
+    <a href="/" class="text-blue text-decoration-none ">Home</a>
+    <span> > </span>
+    <a [routerLink]="['/' + from]" class="text-blue text-decoration-none ">{{from | titlecase}}</a>
+    <span> > </span>
+    <a *ngIf="showEdit else edition" [routerLink]="['/post:id']" class="text-blue text-decoration-none ">Post view</a>
+    <ng-template #edition>
+        <a [routerLink]="['/post/edit/:id']" class="text-blue text-decoration-none ">Post edit</a>
+    </ng-template>
+</p>
+
+<div class="d-flex py-5 flex-column w-100 justify-content-center">
+    <app-post-card
+            [fromFeed]="from === 'feed'"
+            [isEdition]="!showEdit"
+            [isUserPost]="isUserPost"
+            [showEdit]="showEdit"
+            [title]="'toto'"
+            [content]="'tata'"
+            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
+    </app-post-card>
+</div>

@@ -23,7 +23,6 @@ export class SignUpPageComponent implements OnInit {
   }
 
   submitForm() {
-    console.log(this.signUpForm.getRawValue());
     this.isLoading = true;
     this.isSubmit = true;
   }

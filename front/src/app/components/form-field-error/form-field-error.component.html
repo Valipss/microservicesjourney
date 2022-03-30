@@ -1,5 +1,5 @@
 
-<p class="error-text"
+<p class="error-text {{isLegacy ? 'legacy' : ''}}"
    [ngClass]="(isSubmit == true && form.controls[formControlNameString].invalid) ? 'opacity-100' : 'opacity-0'">
     {{ error }}
 </p>

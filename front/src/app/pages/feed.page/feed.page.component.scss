@@ -1,0 +1,7 @@
+app-post-card:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+app-post-card {
+  max-width: 500px;
+}

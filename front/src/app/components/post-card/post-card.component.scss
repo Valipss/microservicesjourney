@@ -1,0 +1,26 @@
+:host {
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 0.5rem;
+
+  .post-title {
+    margin-bottom: 0.5rem;
+  }
+
+  .post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+  }
+}
+
+mat-icon {
+  cursor: pointer;
+}
+
+mat-icon.red-icon {
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  height: 1.75rem;
+  width: 1.75rem;
+}

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validator, Validators} from "@angular/forms";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-login.page',
@@ -14,16 +15,14 @@ export class LoginPageComponent implements OnInit {
     password: new FormControl("", Validators.required)
   });
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
   }
 
   submitForm() {
-    console.log(this.loginForm.getRawValue());
     this.isLoading = true;
     this.isSubmit = true;
-    console.log(this.loginForm.controls['email'].errors);
-    console.log(this.loginForm.controls['email'].errors?.['required'])
+    this.userService.login({lastname: "tarek", email: "", firstname: ""});
   }
 }

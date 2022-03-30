@@ -15,6 +15,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { FormFieldErrorComponent } from './components/form-field-error/form-field-error.component';
+import { PostCardComponent } from './components/post-card/post-card.component';
+import {MatIconModule} from "@angular/material/icon";
+import {MatRippleModule} from "@angular/material/core";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {PostPageComponent} from './pages/post.page/post.page.component';
+import {CommonModule} from "@angular/common";
+import { DeletePostDialogComponent } from './components/delete-post-dialog/delete-post-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {UserService} from "./services/user.service";
+import {PostService} from "./services/post.service";
 
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -30,7 +40,10 @@ export function playerFactory() {
     LoginPageComponent,
     FeedPageComponent,
     DashboardPageComponent,
-    FormFieldErrorComponent
+    FormFieldErrorComponent,
+    PostCardComponent,
+    PostPageComponent,
+    DeletePostDialogComponent
   ],
     imports: [
         BrowserModule,
@@ -39,9 +52,14 @@ export function playerFactory() {
         MatInputModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatRippleModule,
+        MatSnackBarModule,
+        CommonModule,
+        MatDialogModule
     ],
-  providers: [],
+  providers: [UserService, PostService],
   bootstrap: [AppComponent]
 })
 

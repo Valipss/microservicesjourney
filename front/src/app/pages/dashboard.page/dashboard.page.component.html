@@ -1,1 +1,50 @@
-<p>dashboard.page works!</p>
+<p class="my-breadcrumb mt-2 fs-6">
+    <a [routerLink]="['/']" class="text-blue text-decoration-none ">Home</a>
+    <span> > </span>
+    <a [routerLink]="['/dashboard']" class="text-blue text-decoration-none ">Dashboard</a>
+</p>
+
+<div class="d-flex py-4 flex-column w-100 justify-content-center">
+    <app-post-card
+            [fromFeed]="false"
+            [isUserPost]="true"
+            [showEdit]="true"
+            [title]="'toto'"
+            [content]="'tata'"
+            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
+    </app-post-card>
+
+    <app-post-card
+            [fromFeed]="false"
+            [isUserPost]="true"
+            [showEdit]="true"
+            [title]="'toto'"
+            [content]="'tata'"
+            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
+    </app-post-card>
+
+    <app-post-card
+            [fromFeed]="false"
+            [isUserPost]="true"
+            [showEdit]="true"
+            [title]="'toto'"
+            [content]="'tata'"
+            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
+    </app-post-card>
+
+    <app-post-card
+            [isUserPost]="true"
+            [showEdit]="true"
+            [title]="'toto'"
+            [content]="'tata'"
+            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
+    </app-post-card>
+
+    <app-post-card
+            [isUserPost]="true"
+            [showEdit]="true"
+            [title]="'toto'"
+            [content]="'tata'"
+            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
+    </app-post-card>
+</div>

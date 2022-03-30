@@ -7,6 +7,7 @@ import {FormGroup} from "@angular/forms";
   styleUrls: ['./form-field-error.component.scss']
 })
 export class FormFieldErrorComponent implements OnChanges {
+  @Input() isLegacy = false;
   @Input() form!: FormGroup;
   @Input() isSubmit!: boolean;
   @Input() formControlNameString!: string;

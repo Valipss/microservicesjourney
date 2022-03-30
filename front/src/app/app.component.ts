@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
+import {UserService} from "./services/user.service";
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,19 @@ import {Router} from "@angular/router";
 export class AppComponent {
   isLogged: boolean = false;
 
-  constructor(public router: Router) {
+  constructor(public router: Router,
+              private userService: UserService) {
+    this.userService.isLoggedChange.subscribe((value) => {
+      this.isLogged = value;
+    });
+    userService.init();
+  }
 
+  ngOnInit(): void {
+
+  }
+
+  logout() {
+    this.userService.logout();
   }
 }
