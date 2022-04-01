@@ -28,6 +28,7 @@
     "lint": "eslint src/. test/. --config .eslintrc.json --fix",
     "dev": "nodemon src/",
     "start": "node src/",
+    "reset": "sequelize db:migrate && node src/",
     "mocha": "mocha test/ --recursive --exit"
   },
   "standard": {
@@ -52,6 +53,7 @@
     "helmet": "^4.6.0",
     "mariadb": "^3.0.0",
     "sequelize": "^6.17.0",
+    "sequelize-cli": "^6.4.1",
     "serve-favicon": "^2.5.0",
     "winston": "^3.3.3"
   },

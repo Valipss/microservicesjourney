@@ -10,6 +10,8 @@ src_managed/
 project/boot/
 .history
 .cache
+node_modules
+package-lock.json
 
 ### Java template
 *.class
