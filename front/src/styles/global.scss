@@ -35,4 +35,52 @@ h1,h2,h3,h4,h5,h6,p {
   margin: 0;
   padding-left: 0.5rem;
   font-weight: 600;
+  white-space: pre-wrap;
+}
+
+.error-text.legacy {
+  padding-left: 0;
+}
+
+
+.blue-icon {
+  color: var(--bs-blue);
+}
+
+.blue-icon svg {
+  fill: var(--bs-blue);
+}
+
+.red-icon {
+  color: var(--bs-danger);
+}
+
+.red-icon svg {
+  fill: var(--bs-danger);
+}
+
+.success-snackbar {
+  background: var(--bs-success);
+  color: white;
+}
+
+.danger-snackbar {
+  background: var(--bs-danger);
+  color: white;
+}
+
+.mat-button-wrapper {
+  color: white !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+textarea {
+  resize: none !important;
+}
+
+form {
+  max-width: 500px;
 }

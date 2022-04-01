@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validator, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-login.page',
@@ -15,14 +17,22 @@ export class LoginPageComponent implements OnInit {
     password: new FormControl("", Validators.required)
   });
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+              private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  submitForm() {
-    this.isLoading = true;
+  async submitForm() {
     this.isSubmit = true;
-    this.userService.login({lastname: "tarek", email: "", firstname: ""});
+
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      await this.userService.login({
+        "email": this.loginForm.get('email')!.value,
+        "password": this.loginForm.get('password')!.value,
+      });
+      this.isLoading = false;
+    }
   }
 }

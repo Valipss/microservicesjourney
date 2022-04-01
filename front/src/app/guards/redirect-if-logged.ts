@@ -16,10 +16,10 @@ export class RedirectIfLogged implements CanActivate {
         const isLogged = localStorage.getItem('userId') !== null;
 
         if (isLogged) {
-            this.router.navigate(['/home']).then(() => {
+            this.router.navigate(['/dashboard']).then(() => {
                 this.snackBar.open('Welcome back ' + this.userService.getUserName(), '', {
                     duration: 4000,
-                    panelClass: ['danger-snackbar']
+                    panelClass: ['success-snackbar']
                 });
             });
             return false;
