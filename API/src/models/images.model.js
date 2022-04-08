@@ -8,7 +8,7 @@ module.exports = function (app) {
   const images = sequelizeClient.define('images', {
     hash: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true
     }
   }, {
