@@ -17,7 +17,6 @@ module.exports = (context) => {
 
     function loopIncluder(toLoopOn) {
         var toFill = [];
-
         toLoopOn.forEach(toInclude => {
             if (isJSON(toInclude)) {
                 const nested = JSON.parse(toInclude);
@@ -31,9 +30,16 @@ module.exports = (context) => {
                             offset: nested.skip
                         });
                     }
+                } else if (nested.name && nested.include) {
+                    if (nested.name in context.service.Model.associations) {
+                        toFill.push({
+                            model: context.app.service(nested.name).Model,
+                            include: loopIncluder(nested.include)
+                        });
+                    }
                 }
             } else {
-                if (toInclude in context.service.Model.associations) {
+                if (toInclude in context.service.Model.associations || toInclude.slice(0, -1) in context.service.Model.associations) {
                     toFill.push({
                         model: context.app.service(toInclude).Model,
                     });
