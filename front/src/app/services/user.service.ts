@@ -26,15 +26,25 @@ export class UserService implements OnDestroy {
         this.isLoggedChange.next(!this._isLogged);
     }
 
-    init() {
-        const token = localStorage.getItem('jwt');
+    async init() {
+        const token = localStorage.getItem('accessToken');
         const userId = localStorage.getItem('userId');
 
         if (token && userId) {
-            this.toggleIsLogged();
-            this._user = {
-                //TODO remove fake data
-                email: "paulsurrans@gmail.com", firstname: "paul", lastname: "surrans"
+            let request = await fetch('http://localhost:3031/users/' + localStorage.getItem('userId'), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                },
+            });
+            if (request.ok) {
+                const data = await request.json();
+                console.log(data);
+                this._user = data;
+                this.toggleIsLogged();
+            } else {
+                this.logout();
             }
         }
     }
@@ -42,12 +52,12 @@ export class UserService implements OnDestroy {
     async login(user: User) {
         let request = await fetch('http://localhost:3031/authentication', {
             method: 'POST',
-            headers: new Headers({
+            headers: {
                 'Content-Type': 'application/json'
-            }),
+            },
             body: JSON.stringify({"email": user.email, "password": user.password, "strategy": "local"})
         });
-
+        console.log(request);
         if (request?.ok) {
             const data = await request.json();
             if (data) {
@@ -73,9 +83,9 @@ export class UserService implements OnDestroy {
     async signup(user: User) {
         let request = await fetch('http://localhost:3031/users', {
             method: 'POST',
-            headers: new Headers({
+            headers: {
                 'Content-Type': 'application/json'
-            }),
+            },
             body: JSON.stringify(user)
         });
 
@@ -91,7 +101,7 @@ export class UserService implements OnDestroy {
     }
 
     logout() {
-        localStorage.removeItem('jwt');
+        localStorage.removeItem('accessToken');
         localStorage.removeItem('userId');
         this.router.navigate(['/login']);
         this.toggleIsLogged();

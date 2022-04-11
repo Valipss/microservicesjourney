@@ -1,4 +1,4 @@
-<div *ngIf="isEdition || isCreate else justView" [formGroup]="createOrEditPostForm" id="post-y" class="post-card p-4 shadow">
+<div *ngIf="mode !== 'view' else justView" [formGroup]="createOrEditPostForm" id="post-y" class="post-card p-4 shadow">
     <div class="d-flex justify-content-between ">
         <div class="w-100">
             <mat-form-field class="example-full-width w-100" appearance="legacy">
@@ -12,7 +12,7 @@
         </div>
 
         <div class="d-flex align-items-center actions-ctn">
-            <mat-icon (click)="openLinkCopiedSnackBar($event)" matRipple class="blue-icon me-3 rounded" aria-hidden="false" aria-label="Share">share</mat-icon>
+            <mat-icon *ngIf="mode != 'create'" (click)="openLinkCopiedSnackBar($event)" matRipple class="blue-icon me-3 rounded" aria-hidden="false" aria-label="Share">share</mat-icon>
             <ng-container *ngIf="isUserPost">
                 <mat-icon *ngIf="showEdit else saveModification"  (click)="navToPostEdition()" matRipple class="blue-icon ms-4 me-2 rounded" aria-hidden="false" aria-label="Edit">edit</mat-icon>
                 <ng-template #saveModification>
@@ -24,12 +24,12 @@
     </div>
     <div class="d-flex w-100">
         <mat-form-field class="example-full-width w-100" appearance="legacy">
-            <textarea rows="4" formControlName="content" matInput placeholder="Post content"></textarea>
+            <textarea rows="4" formControlName="body" matInput placeholder="Post content"></textarea>
         </mat-form-field>
     </div>
     <app-form-field-error   [isLegacy]="true"
                             [form]="createOrEditPostForm"
-                            [formControlNameString]="'content'"
+                            [formControlNameString]="'body'"
                             [isSubmit]="isSubmit"
                             [displayField]="'Content'"></app-form-field-error>
     <label class="p-0 mb-3 image-upload-container btn btn-bwm">
@@ -63,7 +63,7 @@
             </div>
         </div>
         <p style="font-size: 10px;margin-top: -12px">Written by Paul Surrans</p>
-        <p [ngClass]="imageUrl ? 'mb-2' : 'mb-0'" class="post-content">{{ content }}</p>
+        <p [ngClass]="imageUrl ? 'mb-2' : 'mb-0'" class="post-content">{{ body }}</p>
         <div *ngIf="imageUrl" class="d-flex align-items-center justify-content-center">
             <img class="post-image" [src]="imageUrl" alt="post image">
         </div>

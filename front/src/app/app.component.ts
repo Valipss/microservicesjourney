@@ -17,7 +17,6 @@ export class AppComponent {
       console.log(this.isLogged);
     });
     userService.init();
-    console.log(this.isLogged);
   }
 
   ngOnInit(): void {

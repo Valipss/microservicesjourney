@@ -25,7 +25,12 @@ const routes: Routes = [
       {
         path: 'edit/:id',
         component: PostPageComponent,
-        canActivate:[IsLoggedGuard]
+        canActivate: [IsLoggedGuard]
+      },
+      {
+        path: 'create/',
+        component: PostPageComponent,
+        canActivate: [IsLoggedGuard]
       }
     ],
   },

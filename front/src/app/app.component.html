@@ -6,6 +6,7 @@
             <a *ngSwitchCase="'/sign-up'" [routerLink]="['/login']" class="btn btn-outline-primary-white">Log in</a>
             <div *ngSwitchDefault>
                 <div *ngIf="isLogged else login">
+                    <a [routerLink]="['/post/create']" [queryParams]="{from: 'dashboard'}" class="btn btn-outline-primary-white me-3">Create a post</a>
                     <a [routerLink]="['/feed']" class="btn btn-outline-primary-white me-3">Feed</a>
                     <a [routerLink]="['/dashboard']" class="btn btn-outline-primary-white me-3">Dashboard</a>
                     <button (click)="logout()" class="btn btn-outline-danger">Logout</button>
