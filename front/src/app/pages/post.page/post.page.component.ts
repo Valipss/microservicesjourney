@@ -4,6 +4,7 @@ import {UserService} from "../../services/user.service";
 import {Post} from "../../models/post";
 import {PostService} from "../../services/post.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {User} from "../../models/user";
 
 @Component({
   selector: 'app-post.page',
@@ -11,9 +12,11 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./post.page.component.scss']
 })
 export class PostPageComponent implements OnInit {
+  user!: User;
   post!: Post;
   title: string = '';
   body: string = '';
+  image!: File;
   isUserPost: boolean = true;
   showEdit: boolean = true;
   from!: string;
@@ -26,6 +29,7 @@ export class PostPageComponent implements OnInit {
               private snackBar: MatSnackBar) {}
 
   async ngOnInit() {
+    this.user = await this.userService.getUser();
     this.route.paramMap.subscribe(async params => {
       if (this.router.url.includes('edit')) {
         this.showEdit = false;
@@ -37,7 +41,8 @@ export class PostPageComponent implements OnInit {
         this.showEdit = false;
         this.mode = 'create';
       } else {
-        this.showEdit = this.userService.getLoggedStatus();
+        //TODO get the fact that the post belong to the user
+        this.showEdit = true;
       }
       this.from = this.router.url.split('?')[1]?.split('from=')[1];
     });

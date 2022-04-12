@@ -17,10 +17,11 @@ export class FeedPageComponent implements OnInit {
   constructor(private router: Router, private postService: PostService) { }
 
   async ngOnInit() {
-    const post = await this.postService.getPost('1');
+    const post = await this.postService.getPost('21');
     console.log(post);
     const posts = await this.postService.getPosts(this.skip, this.limit);
-    this.posts = [...posts];
+    console.log(posts);
+    this.posts = [...posts.data];
   }
 
 

@@ -27,6 +27,7 @@ export class PostCardComponent implements OnInit {
     @Output() emitEdition: EventEmitter<dataToSend> = new EventEmitter<dataToSend>();
     @Output() emitCreation: EventEmitter<dataToSend> = new EventEmitter<dataToSend>();
 
+    image!: File;
     isSubmit: boolean = false;
     createOrEditPostForm = new FormGroup({
         title: new FormControl('', Validators.required),
@@ -101,7 +102,7 @@ export class PostCardComponent implements OnInit {
         this.isSubmit = true;
 
         if (this.createOrEditPostForm.valid) {
-            this.mode === 'edit' ? this.emitEdition.emit(this.createOrEditPostForm.getRawValue()) : this.emitCreation.emit(this.createOrEditPostForm.getRawValue());
+            this.mode === 'edit' ? this.emitEdition.emit({...this.createOrEditPostForm.getRawValue(), image: this.image}) : this.emitCreation.emit({...this.createOrEditPostForm.getRawValue(), image: this.image});
         }
     }
 
@@ -114,7 +115,10 @@ export class PostCardComponent implements OnInit {
     }
 
     processFile(imageInput: any) {
+        console.log(imageInput);
         const file: File = imageInput.files[0];
+        this.image = file;
+        console.log(this.image);
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {

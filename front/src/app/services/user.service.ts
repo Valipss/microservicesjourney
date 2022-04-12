@@ -31,7 +31,7 @@ export class UserService implements OnDestroy {
         const userId = localStorage.getItem('userId');
 
         if (token && userId) {
-            let request = await fetch('http://localhost:3031/users/' + localStorage.getItem('userId'), {
+            let request = await fetch('http://localhost:3031/users/' + localStorage.getItem('userId') + '?$include[]={"name":"posts","include":["images"],"limit":100,"skip":1}', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -107,15 +107,12 @@ export class UserService implements OnDestroy {
         this.toggleIsLogged();
     }
 
-    getUserId() {
-        return this._user.id;
-    }
+    async getUser() {
+        const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-    getUserName() {
-        return this._user.lastname + ' ' + this._user.firstname;
-    }
-
-    getLoggedStatus() {
-        return this._isLogged;
+        while (!this._user) {
+            await sleep(1000);
+        }
+        return this._user;
     }
 }
