@@ -5,40 +5,15 @@
 </p>
 
 <div class="d-flex py-4 flex-column w-100 justify-content-center">
-    <app-post-card
-            [fromFeed]="true"
-            [isUserPost]="true"
-            [showEdit]="true"
-            [title]="'toto'"
-            [body]="'tata'"
-            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
-    </app-post-card>
-
-    <app-post-card
-            [fromFeed]="true"
-            [isUserPost]="false"
-            [showEdit]="true"
-            [title]="'toto'"
-            [body]="'tata'"
-            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
-    </app-post-card>
-
-    <app-post-card
-            [fromFeed]="true"
-            [title]="'toto'"
-            [body]="'tata'"
-            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
-    </app-post-card>
-
-    <app-post-card
-            [title]="'toto'"
-            [body]="'tata'"
-            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
-    </app-post-card>
-
-    <app-post-card
-            [title]="'toto'"
-            [body]="'tata'"
-            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
-    </app-post-card>
+    <mat-spinner *ngIf="!postHasLoaded else postsT" [diameter]="38"></mat-spinner>
+    <ng-template #postsT>
+        <app-post-card
+                (emitDeletion)="deletePost($event)"
+                *ngFor="let post of posts"
+                [post]="post"
+                [fromFeed]="true"
+                [isUserPost]="post.userId === user?.id"
+                [showEdit]="post.userId === user?.id">
+        </app-post-card>
+    </ng-template>
 </div>

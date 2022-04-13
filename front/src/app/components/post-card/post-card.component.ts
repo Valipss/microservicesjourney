@@ -4,11 +4,8 @@ import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {DeletePostDialogComponent} from "../delete-post-dialog/delete-post-dialog.component";
-
-interface dataToSend {
-    title: string,
-    body: string,
-}
+import {Post} from "../../models/post";
+import {Clipboard} from "@angular/cdk/clipboard"
 
 @Component({
     selector: 'app-post-card',
@@ -16,17 +13,18 @@ interface dataToSend {
     styleUrls: ['./post-card.component.scss']
 })
 export class PostCardComponent implements OnInit {
-    @Input() title!: string;
-    @Input() body!: string;
-    @Input() imageUrl?: string;
+    @Input() post!: Post;
     @Input() isUserPost!: boolean;
     @Input() showEdit!: boolean;
     @Input() mode: 'view' | 'edit' | 'create' = 'view';
     @Input() isCreate: boolean = false;
     @Input() fromFeed!: boolean;
-    @Output() emitEdition: EventEmitter<dataToSend> = new EventEmitter<dataToSend>();
-    @Output() emitCreation: EventEmitter<dataToSend> = new EventEmitter<dataToSend>();
+    @Output() emitEdition: EventEmitter<Post> = new EventEmitter<Post>();
+    @Output() emitCreation: EventEmitter<Post> = new EventEmitter<Post>();
+    @Output() emitDeletion: EventEmitter<string> = new EventEmitter<string>();
 
+    imageUrl!: string;
+    imageHash : string | undefined = undefined;
     image!: File;
     isSubmit: boolean = false;
     createOrEditPostForm = new FormGroup({
@@ -36,8 +34,11 @@ export class PostCardComponent implements OnInit {
 
     @HostListener('click', ['$event.target'])
     onClick(_: any) {
-        if (this.showEdit) {
-            this.router.navigate(['/post/:id'], {
+        if (this.mode !== 'create') {
+            this.router.navigate(['/post/' + this.post.id], {
+                state: {
+                    post: this.post
+                },
                 queryParams: {
                     'from': this.fromFeed ? 'feed' : 'dashboard'
                 }
@@ -46,25 +47,28 @@ export class PostCardComponent implements OnInit {
     }
 
     @HostBinding('class.cursor-pointer') get className() {
-        return this.showEdit;
+        return this.mode !== 'create';
     }
 
     constructor(private snackBar: MatSnackBar,
                 private router: Router,
                 private dialog: MatDialog,
-                private elementRef: ElementRef) {
+                private elementRef: ElementRef,
+                private clipboard: Clipboard) {
         this.isCreate = router.url.includes('create');
     }
 
     ngOnInit(): void {
+        this.imageHash = this.post && this.post.image ? 'http://localhost:3001/' + this.post.image.hash : undefined;
         this.createOrEditPostForm.patchValue({
-            title: this.title,
-            body: this.body
+            title: this.post ? this.post.title : '',
+            body: this.post ? this.post.body : ''
         });
     }
 
     openLinkCopiedSnackBar(e: Event) {
         e.stopImmediatePropagation();
+        this.clipboard.copy('http://localhost:4200/post/' + this.post.id);
         this.snackBar.open('Post link copied in the clipboard !', '', {
             duration: 4000,
             panelClass: ['success-snackbar']
@@ -78,20 +82,10 @@ export class PostCardComponent implements OnInit {
         ref.afterClosed().subscribe(isConfirm => {
             if (isConfirm === true) {
                 if (this.router.url === '/dashboard' || this.router.url === '/feed') {
-                    console.log('dd');
                     this.elementRef.nativeElement.classList.add('d-none');
-                    //TODO delete post really
-                    this.snackBar.open('The post has been deleted', '', {
-                        duration: 4000,
-                        panelClass: ['danger-snackbar']
-                    });
+                    this.emitDeletion.emit(this.post.id);
                 } else {
-                    this.router.navigate([this.fromFeed ? 'feed' : 'dashboard']).then(() => {
-                        this.snackBar.open('The post has been deleted', '', {
-                            duration: 4000,
-                            panelClass: ['danger-snackbar']
-                        });
-                    });
+                    this.emitDeletion.emit(this.post.id);
                 }
             }
         });
@@ -102,12 +96,16 @@ export class PostCardComponent implements OnInit {
         this.isSubmit = true;
 
         if (this.createOrEditPostForm.valid) {
-            this.mode === 'edit' ? this.emitEdition.emit({...this.createOrEditPostForm.getRawValue(), image: this.image}) : this.emitCreation.emit({...this.createOrEditPostForm.getRawValue(), image: this.image});
+            this.mode === 'edit' ? this.emitEdition.emit({...this.createOrEditPostForm.getRawValue(), file: this.image, id: this.post.id}) :
+                                   this.emitCreation.emit({...this.createOrEditPostForm.getRawValue(), file: this.image});
         }
     }
 
     navToPostEdition() {
-        this.router.navigate(['/post/edit/:id'], {
+        this.router.navigate(['/post/edit/' + this.post.id], {
+            state: {
+                post: this.post
+            },
             queryParams: {
                 'from': this.fromFeed ? 'feed' : 'dashboard'
             }

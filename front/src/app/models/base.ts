@@ -1,5 +1,5 @@
 export interface SQLItem {
-    id?: number,
+    id?: string,
     createdAt?: string,
     updatedAt?: string
 }

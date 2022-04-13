@@ -42,15 +42,15 @@
                (change)="processFile(imageInput)">
     </label>
 
-    <div *ngIf="imageUrl" class="d-flex align-items-center justify-content-center">
-        <img class="post-image" [src]="imageUrl" alt="post image">
+    <div *ngIf="imageUrl || imageHash" class="d-flex align-items-center justify-content-center">
+        <img class="post-image" [src]="imageUrl ? imageUrl : imageHash" alt="post image">
     </div>
 </div>
 
 <ng-template #justView>
     <div id="post-x" class="post-card p-4 shadow">
         <div class="d-flex justify-content-between ">
-            <h4 class="post-title">{{ title }}</h4>
+            <h4 class="post-title">{{ post?.title }}</h4>
             <div class="d-flex align-items-center actions-ctn">
                 <mat-icon (click)="openLinkCopiedSnackBar($event)" matRipple class="blue-icon me-3 rounded" aria-hidden="false" aria-label="Share">share</mat-icon>
                 <ng-container *ngIf="isUserPost">
@@ -62,10 +62,9 @@
                 </ng-container>
             </div>
         </div>
-        <p style="font-size: 10px;margin-top: -12px">Written by Paul Surrans</p>
-        <p [ngClass]="imageUrl ? 'mb-2' : 'mb-0'" class="post-content">{{ body }}</p>
-        <div *ngIf="imageUrl" class="d-flex align-items-center justify-content-center">
-            <img class="post-image" [src]="imageUrl" alt="post image">
+        <p [ngClass]="imageUrl || imageHash ? 'mb-2' : 'mb-0'" class="post-content">{{ post?.body }}</p>
+        <div *ngIf="imageUrl || imageHash" class="d-flex align-items-center justify-content-center">
+            <img class="post-image" [src]="imageUrl ? imageUrl : imageHash" alt="post image">
         </div>
     </div>
 </ng-template>

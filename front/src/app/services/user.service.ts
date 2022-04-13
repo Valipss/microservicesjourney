@@ -7,7 +7,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({ providedIn: 'root' })
 export class UserService implements OnDestroy {
-    private _user!: User;
+    private _user: User | undefined = undefined;
     private _isLogged: boolean = false;
     isLoggedChange: Subject<boolean> = new Subject<boolean>();
 
@@ -22,11 +22,12 @@ export class UserService implements OnDestroy {
         this.isLoggedChange.unsubscribe();
     }
 
-    toggleIsLogged() {
-        this.isLoggedChange.next(!this._isLogged);
+    toggleIsLogged(logged: boolean) {
+        this.isLoggedChange.next(logged);
     }
 
     async init() {
+        console.log('init');
         const token = localStorage.getItem('accessToken');
         const userId = localStorage.getItem('userId');
 
@@ -42,7 +43,7 @@ export class UserService implements OnDestroy {
                 const data = await request.json();
                 console.log(data);
                 this._user = data;
-                this.toggleIsLogged();
+                this.toggleIsLogged(true);
             } else {
                 this.logout();
             }
@@ -63,8 +64,8 @@ export class UserService implements OnDestroy {
             if (data) {
                 console.log(data);
                 localStorage.setItem('accessToken', data.accessToken);
-                localStorage.setItem('userId', data.user.id);
-                this.toggleIsLogged();
+                localStorage.setItem('userId', data.user?.id);
+                this.toggleIsLogged(true);
                 this.router.navigate(['/dashboard']);
             } else {
                 this.snackBar.open('An error occurred. Please retry later.', '', {
@@ -104,15 +105,12 @@ export class UserService implements OnDestroy {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userId');
         this.router.navigate(['/login']);
-        this.toggleIsLogged();
+        this._user = undefined;
+        this.toggleIsLogged(false);
     }
 
     async getUser() {
-        const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
-
-        while (!this._user) {
-            await sleep(1000);
-        }
+        await this.init();
         return this._user;
     }
 }

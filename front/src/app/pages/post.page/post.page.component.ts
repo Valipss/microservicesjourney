@@ -12,37 +12,53 @@ import {User} from "../../models/user";
   styleUrls: ['./post.page.component.scss']
 })
 export class PostPageComponent implements OnInit {
-  user!: User;
+  user: User | undefined;
   post!: Post;
   title: string = '';
   body: string = '';
   image!: File;
-  isUserPost: boolean = true;
-  showEdit: boolean = true;
+  isUserPost: boolean = false;
+  showEdit: boolean = false;
   from!: string;
   mode: 'view' | 'edit' | 'create' = 'view';
+  isLoading: boolean = true;
 
   constructor(private router: Router,
+              private postService: PostService,
               private userService: UserService,
               private route: ActivatedRoute,
-              private postService: PostService,
-              private snackBar: MatSnackBar) {}
+              private snackBar: MatSnackBar) {
+    const postId = this.route.snapshot.paramMap.get('id');
+    const navigation = this.router.getCurrentNavigation();
+    if (postId && postId != 'create') {
+      if (navigation?.extras?.state && 'post' in navigation.extras.state) {
+        this.post = (this.router.getCurrentNavigation()?.extras.state as { post: Post }).post;
+        this.isLoading = false;
+      } else {
+        this.postService.getPost(postId!).then((post) => {
+          this.post = post;
+          this.userService.getUser().then((user) => {
+            this.user = user;
+            this.isUserPost = this.post.userId === this.user?.id;
+          });
+          this.isLoading = false;
+        });
+      }
+    } else {
+      this.isLoading = false;
+    }
+  }
 
   async ngOnInit() {
-    this.user = await this.userService.getUser();
     this.route.paramMap.subscribe(async params => {
       if (this.router.url.includes('edit')) {
         this.showEdit = false;
         this.mode = 'edit';
-
-        const postId = this.route.snapshot.paramMap.get('id');
-        this.post = await this.postService.getPost(postId!);
       } else if (this.router.url.includes('create')) {
         this.showEdit = false;
         this.mode = 'create';
       } else {
-        //TODO get the fact that the post belong to the user
-        this.showEdit = true;
+        this.showEdit = this.isUserPost;
       }
       this.from = this.router.url.split('?')[1]?.split('from=')[1];
     });
@@ -52,10 +68,12 @@ export class PostPageComponent implements OnInit {
     await this.postService.createPost(event);
   }
 
-  editPost(event: any) {
-    this.snackBar.open('The modifications has been saved', '', {
-      duration: 4000,
-      panelClass: ['success-snackbar']
-    });
+  async editPost(event: Post) {
+    await this.postService.editPost(event);
+  }
+
+  async deletePost(event: string) {
+    await this.postService.deletePost(event);
+    this.router.navigate([this.from ? this.from : 'dashboard']);
   }
 }

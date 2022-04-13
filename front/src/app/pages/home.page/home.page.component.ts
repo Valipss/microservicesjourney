@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AnimationOptions} from "ngx-lottie";
+import {User} from "../../models/user";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-home.page',
@@ -7,13 +9,15 @@ import {AnimationOptions} from "ngx-lottie";
   styleUrls: ['./home.page.component.scss']
 })
 export class HomePageComponent implements OnInit {
+  user: User | undefined;
   options: AnimationOptions = {
     path: '/assets/animations/home-animation.json',
   };
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.user = await this.userService.getUser();
   }
 
 }

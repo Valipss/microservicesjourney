@@ -25,6 +25,7 @@ import { DeletePostDialogComponent } from './components/delete-post-dialog/delet
 import {MatDialogModule} from "@angular/material/dialog";
 import {UserService} from "./services/user.service";
 import {PostService} from "./services/post.service";
+import {ClipboardModule} from "@angular/cdk/clipboard";
 
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -59,7 +60,7 @@ export function playerFactory() {
         CommonModule,
         MatDialogModule
     ],
-  providers: [UserService, PostService],
+  providers: [UserService, PostService, ClipboardModule],
   bootstrap: [AppComponent]
 })
 

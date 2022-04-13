@@ -1,7 +1,7 @@
 <p class="my-breadcrumb mt-2 fs-6">
     <a href="/" class="text-blue text-decoration-none ">Home</a>
-    <span> > </span>
-    <a [routerLink]="['/' + from ? 'dashboard' : 'feed']" class="text-blue text-decoration-none ">{{(from ? 'dashboard' : 'feed') | titlecase}}</a>
+    <span *ngIf="from"> > </span>
+    <a *ngIf="from" [routerLink]="['/' + from]" class="text-blue text-decoration-none ">{{(from) | titlecase}}</a>
     <span> > </span>
     <ng-container [ngSwitch]="mode">
         <a *ngSwitchCase="'view'"  class="text-blue text-decoration-none ">Post view</a>
@@ -11,15 +11,17 @@
 </p>
 
 <div class="d-flex py-5 flex-column w-100 justify-content-center">
-    <app-post-card
-            (emitCreation)="createPost($event)"
-            (emitEdition)="editPost($event)"
-            [fromFeed]="from === 'feed'"
-            [mode]="mode"
-            [isUserPost]="isUserPost"
-            [showEdit]="showEdit"
-            [title]="title"
-            [body]="body"
-            [imageUrl]="'https://cdn.motor1.com/images/mgl/RGlZA/s3/tata-punch-il-mini-suv-low-cost-per-l-india.webp'">
-    </app-post-card>
+    <mat-spinner *ngIf="isLoading else postT" [diameter]="38"></mat-spinner>
+    <ng-template #postT>
+        <app-post-card
+                (emitCreation)="createPost($event)"
+                (emitEdition)="editPost($event)"
+                (emitDeletion)="deletePost($event)"
+                [fromFeed]="from === 'feed'"
+                [mode]="mode"
+                [post]="post"
+                [isUserPost]="isUserPost"
+                [showEdit]="showEdit">
+        </app-post-card>
+    </ng-template>
 </div>

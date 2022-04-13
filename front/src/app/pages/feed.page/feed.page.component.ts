@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Post} from "../../models/post";
 import {Router} from "@angular/router";
 import {PostService} from "../../services/post.service";
+import {UserService} from "../../services/user.service";
+import {User} from "../../models/user";
 
 @Component({
   selector: 'app-feed.page',
@@ -13,19 +15,22 @@ export class FeedPageComponent implements OnInit {
   skip: number = 0;
   limit: number = 10;
   maxPost!: number;
+  user: User |undefined;
+  postHasLoaded: boolean = false;
 
-  constructor(private router: Router, private postService: PostService) { }
+  constructor(private router: Router, private postService: PostService, private userService: UserService) { }
 
   async ngOnInit() {
-    const post = await this.postService.getPost('21');
-    console.log(post);
+    this.user = await this.userService.getUser();
     const posts = await this.postService.getPosts(this.skip, this.limit);
-    console.log(posts);
     this.posts = [...posts.data];
+    this.postHasLoaded = true;
+    console.log(posts);
   }
 
 
-  async loadMorePosts() {
-
+  async deletePost(event: string) {
+    console.log(event);
+    await this.postService.deletePost(event);
   }
 }
