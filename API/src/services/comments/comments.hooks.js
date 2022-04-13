@@ -11,7 +11,7 @@ module.exports = {
     create: [authenticate('jwt'), retrieveSender],
     update: [authenticate('jwt'), retrieveSender],
     patch: [authenticate('jwt'), retrieveSender],
-    remove: [authenticate('jwt'), retrieveSender]
+    remove: [authenticate('jwt')]
   },
 
   after: {
