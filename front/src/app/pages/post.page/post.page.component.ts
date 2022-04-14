@@ -50,14 +50,19 @@ export class PostPageComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.user = await this.userService.getUser();
     this.route.paramMap.subscribe(async params => {
       if (this.router.url.includes('edit')) {
+        this.isUserPost = true;
         this.showEdit = false;
         this.mode = 'edit';
       } else if (this.router.url.includes('create')) {
+        this.isUserPost = true;
         this.showEdit = false;
         this.mode = 'create';
       } else {
+        this.isUserPost = this.post?.userId === this.user?.id;
+        console.log('uidd', this.post?.userId, this.user?.id, this.isUserPost);
         this.showEdit = this.isUserPost;
       }
       this.from = this.router.url.split('?')[1]?.split('from=')[1];
@@ -73,7 +78,11 @@ export class PostPageComponent implements OnInit {
   }
 
   async deletePost(event: string) {
-    await this.postService.deletePost(event);
-    this.router.navigate([this.from ? this.from : 'dashboard']);
+    if (this.post) {
+      await this.postService.deletePost(event);
+    }
+    this.router.navigate(['dashboard']).then(() => {
+
+    });
   }
 }

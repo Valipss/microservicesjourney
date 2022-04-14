@@ -83,9 +83,9 @@ export class PostCardComponent implements OnInit {
             if (isConfirm === true) {
                 if (this.router.url === '/dashboard' || this.router.url === '/feed') {
                     this.elementRef.nativeElement.classList.add('d-none');
-                    this.emitDeletion.emit(this.post.id);
+                    this.emitDeletion.emit(this.post?.id);
                 } else {
-                    this.emitDeletion.emit(this.post.id);
+                    this.emitDeletion.emit(this.post?.id);
                 }
             }
         });

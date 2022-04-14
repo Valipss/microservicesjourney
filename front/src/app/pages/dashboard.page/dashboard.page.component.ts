@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Post} from "../../models/post";
 import {User} from "../../models/user";
 import {Router} from "@angular/router";
