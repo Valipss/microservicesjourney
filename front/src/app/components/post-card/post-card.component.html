@@ -41,6 +41,7 @@
                accept="image/*"
                (change)="processFile(imageInput)">
     </label>
+    <button (click)="deleteImage()" class="ms-2 mb-3 btn btn-danger" *ngIf="imageUrl && !this.post?.image">{{ 'Delete image'}}</button>
 
     <div *ngIf="imageUrl || imageHash" class="d-flex align-items-center justify-content-center">
         <img class="post-image" [src]="imageUrl ? imageUrl : imageHash" alt="post image">
@@ -49,7 +50,7 @@
 
 <ng-template #justView>
     <div id="post-x" class="post-card p-4 shadow">
-        <div class="d-flex justify-content-between ">
+        <div class="d-flex justify-content-between">
             <h4 class="post-title">{{ post?.title }}</h4>
             <div class="d-flex align-items-center actions-ctn">
                 <mat-icon (click)="openLinkCopiedSnackBar($event)" matRipple class="blue-icon me-3 rounded" aria-hidden="false" aria-label="Share">share</mat-icon>
@@ -62,9 +63,40 @@
                 </ng-container>
             </div>
         </div>
-        <p [ngClass]="imageUrl || imageHash ? 'mb-2' : 'mb-0'" class="post-content">{{ post?.body }}</p>
-        <div *ngIf="imageUrl || imageHash" class="d-flex align-items-center justify-content-center">
+        <p *ngIf="username" style="font-size: 10px;margin-top: -8px">Written by {{username}} - <span style="font-size: 10px">{{getDate(post?.createdAt!)}}</span></p>
+        <p class="post-content mb-3">{{ post?.body }}</p>
+        <div *ngIf="imageUrl || imageHash"
+             [ngClass]="imageUrl || imageHash ? 'mb-3' : 'mb-0'"
+             class="d-flex align-items-center justify-content-center">
             <img class="post-image" [src]="imageUrl ? imageUrl : imageHash" alt="post image">
+        </div>
+
+        <div #comments class="comments">
+            <div style="max-height: 210px; overflow: auto">
+                <ng-container *ngIf="post?.comments?.length !== 0 else noComment">
+                    <div *ngFor="let comment of post?.comments?.reverse()" class="comment">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <p>{{ comment.user.lastname + ' ' + comment.user.firstname}} - <span style="font-size: 12px">{{getDate(comment.createdAt!)}}</span></p>
+                            <mat-icon style="font-size: 1rem;line-height: 1rem;height: 1rem;width: 1rem;"
+                                      *ngIf="currentUser?.id === comment.user.id" (click)="deleteComment($event, comment.id!)" matRipple class="red-icon rounded" aria-hidden="false" aria-label="Close">delete</mat-icon>
+                        </div>
+                        <p>{{ comment.text }}</p>
+                    </div>
+                </ng-container>
+                <ng-template #noComment>
+                    <p>No comments</p>
+                </ng-template>
+            </div>
+            <div (click)="$event.stopImmediatePropagation()" [formGroup]="commentForm" class="my-comment">
+                <div class="d-flex align-items-center">
+                    <mat-form-field class="example-full-width w-100 me-2" appearance="legacy">
+                        <input formControlName="text" maxlength="128" matInput placeholder="Write your comment here">
+                        <p style="font-size: 10px; margin-top: 4px">{{ commentForm.get('text')?.value ? commentForm.get('text')?.value.length : 0}} / 128</p>
+                    </mat-form-field>
+                    <mat-icon (click)="submitComment()" [ngClass]="commentForm.get('text')?.value ? 'blue-icon' : 'pointer-events-none gray-icon'" matRipple
+                              class="me-3 rounded" aria-hidden="false" aria-label="Send">send</mat-icon>
+                </div>
+            </div>
         </div>
     </div>
 </ng-template>

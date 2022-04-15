@@ -20,13 +20,14 @@ export class DashboardPageComponent implements OnInit {
 
   async ngOnInit() {
     this.user = await this.userService.getUser();
-    const posts = await this.postService.getUserPosts(0, 100);
-    this.posts = [...posts];
+    const data: any = await this.postService.getUserPosts(0, 100);
+    console.log(data);
+    this.posts = [...data.reverse()];
     this.postHasLoaded = true;
-    console.log(posts);
   }
 
   async deletePost(event: string) {
+    this.posts = this.posts.filter((post) => post.id != event);
     await this.postService.deletePost(event);
   }
 }

@@ -8,7 +8,7 @@
     <form class="d-flex flex-column bg-light rounded shadow p-5" [formGroup]="signUpForm">
         <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Lastname</mat-label>
-            <input formControlName="lastname" matInput placeholder="Doe">
+            <input maxlength="32" formControlName="lastname" matInput placeholder="Doe">
         </mat-form-field>
 
         <app-form-field-error [form]="signUpForm"
@@ -18,7 +18,7 @@
 
         <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Firstname</mat-label>
-            <input formControlName="firstname" matInput placeholder="John">
+            <input maxlength="16" formControlName="firstname" matInput placeholder="John">
         </mat-form-field>
 
         <app-form-field-error [form]="signUpForm"

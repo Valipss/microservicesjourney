@@ -23,14 +23,14 @@ export class FeedPageComponent implements OnInit {
   async ngOnInit() {
     this.user = await this.userService.getUser();
     const posts = await this.postService.getPosts(this.skip, this.limit);
-    this.posts = [...posts.data];
+    this.posts = [...posts.data.reverse()];
     this.postHasLoaded = true;
     console.log(posts);
   }
 
 
   async deletePost(event: string) {
-    console.log(event);
+    this.posts = this.posts.filter((post) => post.id != event);
     await this.postService.deletePost(event);
   }
 }

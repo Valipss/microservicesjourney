@@ -41,7 +41,7 @@ export class UserService implements OnDestroy {
             });
             if (request.ok) {
                 const data = await request.json();
-                console.log(data);
+                console.log('current user', data);
                 this._user = data;
                 this.toggleIsLogged(true);
             } else {
@@ -109,8 +109,28 @@ export class UserService implements OnDestroy {
         this.toggleIsLogged(false);
     }
 
-    async getUser() {
+    async getUser(): Promise<User | undefined> {
         await this.init();
         return this._user;
+    }
+
+    async getUserById(id: string) {
+        if (id) {
+            let request = await fetch('http://localhost:3031/users/' + id + '?$include[]={"name":"posts","include":["images", "{\\"name\\":\\"comments\\",\\"include\\":[\\"users:user\\"]}"]}', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                },
+            });
+            if (request.ok) {
+                return await request.json();
+            } else {
+                this.snackBar.open('An error occurred while getting post author.', '', {
+                    duration: 4000,
+                    panelClass: ['danger-snackbar']
+                })
+            }
+        }
     }
 }

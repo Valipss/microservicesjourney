@@ -8,13 +8,11 @@ module.exports = function (app) {
   const users = sequelizeClient.define('users', {
     firstname: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     lastname: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
@@ -25,8 +23,8 @@ module.exports = function (app) {
       type: DataTypes.STRING,
       allowNull: false
     },
-  
-  
+
+
   }, {
     hooks: {
       beforeCount(options) {

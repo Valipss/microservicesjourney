@@ -51,6 +51,14 @@ h1,h2,h3,h4,h5,h6,p {
   fill: var(--bs-blue);
 }
 
+.gray-icon {
+  color: var(--bs-gray-400);
+}
+
+.gray-icon svg {
+  fill: var(--bs-gray-400);
+}
+
 .red-icon {
   color: var(--bs-danger);
 }
@@ -75,6 +83,10 @@ h1,h2,h3,h4,h5,h6,p {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.pointer-events-none {
+  pointer-events: none;
 }
 
 textarea {

@@ -11,7 +11,7 @@ export class PostService {
 
     async getUserPosts(skip: number, number: number) {
         const user = await this.userService.getUser();
-        let request = await fetch(`http://localhost:3031/users/${user?.id}?$include[]={"name":"posts","include":["images"],"limit":100,"skip":0}`, {
+        let request = await fetch(`http://localhost:3031/users/${user?.id}?$include[]={"name":"posts","include":["images", "{\\"name\\":\\"comments\\",\\"include\\":[\\"users:user\\"]}"]}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -20,6 +20,7 @@ export class PostService {
         });
         if (request.ok) {
             const data = await request.json();
+            console.log(data);
             return data.posts;
         } else {
             this.snackBar.open('An error occurred when getting the posts.', '', {
@@ -30,7 +31,7 @@ export class PostService {
     }
 
     async getPosts(skip: number, limit: number) {
-        let request = await fetch('http://localhost:3031/posts?$include[]=images', {
+        let request = await fetch('http://localhost:3031/posts?$include[]=images&$include[]={"name":"comments", "include":["users:user"]}', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -38,7 +39,9 @@ export class PostService {
             }
         });
         if (request.ok) {
-            return await request.json();
+            const data = await request.json();
+            console.log(data);
+            return data;
         } else {
             this.snackBar.open('An error occurred when getting the posts.', '', {
                 duration: 4000,
@@ -48,7 +51,7 @@ export class PostService {
     }
 
     async getPost(postId: string) {
-        let request = await fetch('http://localhost:3031/posts/' + postId + '?$include[]=images', {
+        let request = await fetch('http://localhost:3031/posts/' + postId + '?$include[]=images&$include[]={"name":"comments", "include":["users:user"]}', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -193,6 +196,70 @@ export class PostService {
             });
         } else {
             this.snackBar.open('An error occurred while deleting the post.', '', {
+                duration: 4000,
+                panelClass: ['danger-snackbar']
+            })
+        }
+    }
+
+    async addComment(postId: string | undefined, text: string) {
+        if (postId) {
+            console.log('delete', postId);
+            let request = await fetch('http://localhost:3031/comments/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                },
+                body: JSON.stringify({
+                    postId: postId,
+                    text: text
+                })
+            });
+
+            if (request.ok) {
+                this.snackBar.open('The comment has been added', '', {
+                    duration: 4000,
+                    panelClass: ['success-snackbar']
+                });
+                return await request.json();
+            } else {
+                this.snackBar.open('An error occurred while adding the comment.', '', {
+                    duration: 4000,
+                    panelClass: ['danger-snackbar']
+                });
+            }
+        }
+    }
+
+    async deleteImage(id: string) {
+        console.log('delete', id);
+        await fetch('http://localhost:3031/images/' + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+            }
+        });
+    }
+
+    async deleteComment(id: string) {
+        console.log('delete', id);
+        const request = await fetch('http://localhost:3031/comments/' + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+            }
+        });
+
+        if (request.ok) {
+            this.snackBar.open('The comment has been deleted', '', {
+                duration: 4000,
+                panelClass: ['success-snackbar']
+            });
+        } else {
+            this.snackBar.open('An error occurred while deleting the comment.', '', {
                 duration: 4000,
                 panelClass: ['danger-snackbar']
             })

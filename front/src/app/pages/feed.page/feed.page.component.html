@@ -7,13 +7,20 @@
 <div class="d-flex py-4 flex-column w-100 justify-content-center">
     <mat-spinner *ngIf="!postHasLoaded else postsT" [diameter]="38"></mat-spinner>
     <ng-template #postsT>
-        <app-post-card
-                (emitDeletion)="deletePost($event)"
-                *ngFor="let post of posts"
-                [post]="post"
-                [fromFeed]="true"
-                [isUserPost]="post.userId === user?.id"
-                [showEdit]="post.userId === user?.id">
-        </app-post-card>
+        <ng-container *ngIf="posts.length > 0 else noPostsT">
+            <app-post-card
+                    (emitDeletion)="deletePost($event)"
+                    *ngFor="let post of posts"
+                    [post]="post"
+                    [fromFeed]="true"
+                    [isUserPost]="post.userId === user?.id"
+                    [showEdit]="post.userId === user?.id">
+            </app-post-card>
+        </ng-container>
+    </ng-template>
+
+    <ng-template #noPostsT>
+        <p style="font-size: 1rem">The community has not yet created any posts.<br><br>
+            You can create your first post by clicking on <a [routerLink]="['/post/create']" [queryParams]="{from: 'dashboard'}">this link </a>.</p>
     </ng-template>
 </div>
