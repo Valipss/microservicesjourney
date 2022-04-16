@@ -20,9 +20,8 @@
 4) Edit a **post**
 5) **Remove** a post
 6) Send **comments** on a post
-7) Edit **comments** on a post
-8) **Remove** a comment
-9) **Share** a post
+7) **Remove** a comment
+8) **Share** a post
 
 ## Back-End Functionalities ##
 ### API ###
