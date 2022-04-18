@@ -16,8 +16,6 @@ export class FormFieldErrorComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['isSubmit']) {
-      console.log(this.formControlNameString);
-      console.log(this.form.controls[this.formControlNameString].errors);
       if (this.form.controls[this.formControlNameString].errors?.['required'] === true) {
         this.error = this.displayField + ' is required';
       } else if (this.form.controls[this.formControlNameString].errors?.['email'] === true) {

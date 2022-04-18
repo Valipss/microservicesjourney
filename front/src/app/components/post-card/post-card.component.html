@@ -87,7 +87,7 @@
                     <p>No comments</p>
                 </ng-template>
             </div>
-            <div (click)="$event.stopImmediatePropagation()" [formGroup]="commentForm" class="my-comment">
+            <div *ngIf="isLogged" (click)="$event.stopImmediatePropagation()" [formGroup]="commentForm" class="my-comment">
                 <div class="d-flex align-items-center">
                     <mat-form-field class="example-full-width w-100 me-2" appearance="legacy">
                         <input formControlName="text" maxlength="128" matInput placeholder="Write your comment here">

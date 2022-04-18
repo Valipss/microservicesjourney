@@ -1,5 +1,5 @@
 import {User} from '../models/user';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Injectable, OnDestroy} from "@angular/core";
 import {Subject} from "rxjs";
 import {stringify} from "@angular/compiler/src/util";
@@ -12,7 +12,8 @@ export class UserService implements OnDestroy {
     isLoggedChange: Subject<boolean> = new Subject<boolean>();
 
     constructor(private router: Router,
-                private snackBar: MatSnackBar) {
+                private snackBar: MatSnackBar,
+                private route: ActivatedRoute) {
         this.isLoggedChange.subscribe((value) => {
             this._isLogged = value;
         });
@@ -27,7 +28,6 @@ export class UserService implements OnDestroy {
     }
 
     async init() {
-        console.log('init');
         const token = localStorage.getItem('accessToken');
         const userId = localStorage.getItem('userId');
 
@@ -41,7 +41,6 @@ export class UserService implements OnDestroy {
             });
             if (request.ok) {
                 const data = await request.json();
-                console.log('current user', data);
                 this._user = data;
                 this.toggleIsLogged(true);
             } else {
@@ -58,11 +57,9 @@ export class UserService implements OnDestroy {
             },
             body: JSON.stringify({"email": user.email, "password": user.password, "strategy": "local"})
         });
-        console.log(request);
         if (request?.ok) {
             const data = await request.json();
             if (data) {
-                console.log(data);
                 localStorage.setItem('accessToken', data.accessToken);
                 localStorage.setItem('userId', data.user?.id);
                 this.toggleIsLogged(true);
@@ -115,7 +112,7 @@ export class UserService implements OnDestroy {
     }
 
     async getUserById(id: string) {
-        if (id) {
+        if (id && localStorage.getItem('accessToken')) {
             let request = await fetch('http://localhost:3031/users/' + id + '?$include[]={"name":"posts","include":["images", "{\\"name\\":\\"comments\\",\\"include\\":[\\"users:user\\"]}"]}', {
                 method: 'GET',
                 headers: {
@@ -129,7 +126,17 @@ export class UserService implements OnDestroy {
                 this.snackBar.open('An error occurred while getting post author.', '', {
                     duration: 4000,
                     panelClass: ['danger-snackbar']
-                })
+                });
+            }
+        } else if (this.route.snapshot.queryParamMap.get('firstname')) {
+            return {
+                'firstname': this.route.snapshot.queryParamMap.get('firstname'),
+                'lastname': this.route.snapshot.queryParamMap.get('lastname')
+            }
+        } else {
+            return {
+                'firstname': 'user',
+                'lastname': 'a'
             }
         }
     }

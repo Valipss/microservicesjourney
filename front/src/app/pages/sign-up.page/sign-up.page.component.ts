@@ -43,7 +43,6 @@ export class SignUpPageComponent implements OnInit {
   async submitForm() {
     this.isSubmit = true;
 
-    console.log(this.signUpForm.errors);
     if (this.signUpForm.valid) {
       this.isLoading = true;
 
@@ -71,9 +70,7 @@ export class SignUpPageComponent implements OnInit {
       if (this.signUpForm.errors?.['passwordEz']) {
         this.signUpForm.get('password')!.setErrors({'passwordEz': true});
       } else if (this.signUpForm.errors?.['passwordMatch']) {
-        console.log('error match');
         this.signUpForm.get('passwordConfirmation')!.setErrors({'passwordMatch': true});
-        console.log(this.signUpForm.get('passwordConfirmation')?.errors);
       }
     }
   }

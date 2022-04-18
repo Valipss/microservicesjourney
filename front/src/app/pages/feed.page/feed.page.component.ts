@@ -25,7 +25,6 @@ export class FeedPageComponent implements OnInit {
     const posts = await this.postService.getPosts(this.skip, this.limit);
     this.posts = [...posts.data.reverse()];
     this.postHasLoaded = true;
-    console.log(posts);
   }
 
 

@@ -21,6 +21,7 @@ import {PostService} from "../../services/post.service";
 import * as moment from "moment";
 import {Comment} from "../../models/comment";
 import {User} from "../../models/user";
+import {environment} from "../../../environments/environment";
 
 @Component({
     selector: 'app-post-card',
@@ -54,6 +55,8 @@ export class PostCardComponent implements OnInit {
     commentForm = new FormGroup({
         text: new FormControl('', [Validators.required])
     });
+
+    isLogged = localStorage.getItem('userId');
 
     @HostListener('click', ['$event.target'])
     onClick(_: any) {
@@ -95,7 +98,7 @@ export class PostCardComponent implements OnInit {
 
     openLinkCopiedSnackBar(e: Event) {
         e.stopImmediatePropagation();
-        this.clipboard.copy('http://localhost:4200/post/' + this.post.id);
+        this.clipboard.copy(environment.FRONT_URL + 'post/' + this.post.id + `?lastname=${this.username?.split(' ')[0]}&firstname=${this.username?.split(' ')[1]}`);
         this.snackBar.open('Post link copied in the clipboard !', '', {
             duration: 4000,
             panelClass: ['success-snackbar']
@@ -144,10 +147,8 @@ export class PostCardComponent implements OnInit {
     }
 
     processFile(imageInput: any) {
-        console.log(imageInput);
         const file: File = imageInput.files[0];
         this.image = file;
-        console.log(this.image);
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
@@ -188,7 +189,6 @@ export class PostCardComponent implements OnInit {
     deleteComment(event: any, id: string) {
         event.stopImmediatePropagation();
         this.post.comments = this.post?.comments?.filter(comment => (comment.id !== id));
-        console.log(event.target.parentElement.parentElement.classList.add('d-none'));
         this.postService.deleteComment(id);
     }
 }

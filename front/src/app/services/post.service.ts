@@ -20,7 +20,6 @@ export class PostService {
         });
         if (request.ok) {
             const data = await request.json();
-            console.log(data);
             return data.posts;
         } else {
             this.snackBar.open('An error occurred when getting the posts.', '', {
@@ -40,7 +39,6 @@ export class PostService {
         });
         if (request.ok) {
             const data = await request.json();
-            console.log(data);
             return data;
         } else {
             this.snackBar.open('An error occurred when getting the posts.', '', {
@@ -58,8 +56,6 @@ export class PostService {
                 'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
             }
         });
-        console.log(request);
-
         if (request.ok) {
             return await request.json()
         } else {
@@ -71,7 +67,6 @@ export class PostService {
     }
 
     async createImage(image: { file: string | File; postId: string }) {
-        console.log(image);
         let formData = new FormData();
         formData.append("file", image.file);
         formData.append("postId", image.postId);
@@ -82,14 +77,11 @@ export class PostService {
             },
             body: formData
         });
-        console.log(request);
         const res = await request.json();
-        console.log(res);
         return request;
     }
 
     async createPost(post: Post) {
-        console.log('create', post);
         let postId;
 
         let request = await fetch('http://localhost:3031/posts', {
@@ -103,7 +95,6 @@ export class PostService {
 
         if (request.ok) {
             const data = await request.json();
-            console.log(data);
             postId = data.id;
             if (post.file) {
                 const imageRequest = await this.createImage({file: post.file!, postId: postId});
@@ -137,7 +128,6 @@ export class PostService {
     }
 
     async editPost(post: Post) {
-        console.log('edit', post);
         let request = await fetch('http://localhost:3031/posts/' + post.id, {
             method: 'PATCH',
             headers: {
@@ -180,7 +170,6 @@ export class PostService {
     }
 
     async deletePost(id: string) {
-        console.log('delete', id);
         let request = await fetch('http://localhost:3031/posts/' + id, {
             method: 'DELETE',
             headers: {
@@ -204,7 +193,6 @@ export class PostService {
 
     async addComment(postId: string | undefined, text: string) {
         if (postId) {
-            console.log('delete', postId);
             let request = await fetch('http://localhost:3031/comments/', {
                 method: 'POST',
                 headers: {
@@ -233,7 +221,6 @@ export class PostService {
     }
 
     async deleteImage(id: string) {
-        console.log('delete', id);
         await fetch('http://localhost:3031/images/' + id, {
             method: 'DELETE',
             headers: {
@@ -244,7 +231,6 @@ export class PostService {
     }
 
     async deleteComment(id: string) {
-        console.log('delete', id);
         const request = await fetch('http://localhost:3031/comments/' + id, {
             method: 'DELETE',
             headers: {

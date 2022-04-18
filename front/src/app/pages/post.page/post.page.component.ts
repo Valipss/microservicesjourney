@@ -37,7 +37,6 @@ export class PostPageComponent implements OnInit {
       } else {
         this.postService.getPost(postId!).then((post) => {
           this.post = post;
-          console.log('caca');
           this.userService.getUser().then((user) => {
             this.user = user;
             this.isUserPost = this.post.userId === this.user?.id;
@@ -51,7 +50,6 @@ export class PostPageComponent implements OnInit {
   }
 
   async ngOnInit() {
-    console.log('ui');
     this.user = await this.userService.getUser();
     this.route.paramMap.subscribe(async params => {
       if (this.router.url.includes('edit')) {
@@ -64,7 +62,6 @@ export class PostPageComponent implements OnInit {
         this.mode = 'create';
       } else {
         this.isUserPost = this.post?.userId === this.user?.id;
-        console.log('uidd', this.post?.userId, this.user?.id, this.isUserPost);
         this.showEdit = this.isUserPost;
       }
       this.from = this.router.url.split('?')[1]?.split('from=')[1];

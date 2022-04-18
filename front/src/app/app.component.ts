@@ -14,7 +14,6 @@ export class AppComponent {
               private userService: UserService) {
     this.userService.isLoggedChange.subscribe((value) => {
       this.isLogged = value;
-      console.log(this.isLogged);
     });
     userService.init();
   }

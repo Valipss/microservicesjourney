@@ -21,7 +21,6 @@ export class DashboardPageComponent implements OnInit {
   async ngOnInit() {
     this.user = await this.userService.getUser();
     const data: any = await this.postService.getUserPosts(0, 100);
-    console.log(data);
     this.posts = [...data.reverse()];
     this.postHasLoaded = true;
   }
